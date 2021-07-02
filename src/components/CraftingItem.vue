@@ -9,6 +9,7 @@
   </v-list-item>
 </template>
 <script>
+import { craftingItemIds } from '../store/index'
 export default {
   name: 'CraftingItem',
   props: {
@@ -19,7 +20,7 @@ export default {
   },
   computed: {
     itemObject () {
-      return this.$store.getters.dailyCraftingItems[this.item]
+      return this.$store.getters.dailyCraftingItems.find(item => item.id === craftingItemIds[this.item])
     }
   }
 }

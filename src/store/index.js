@@ -4,6 +4,16 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+// TODO: Document reasoning behind this choice.  API limitations.
+// TODO: Test case against return from /v2/dailycrafting and this to verify ids are up to date
+export const craftingItemIds = {
+  lump_of_mithrilium: 46742,
+  charged_quartz_crystal: 43772,
+  glob_of_elder_spirit_residue: 46744,
+  spool_of_silk_weaving_thread: 46740,
+  spool_of_thick_elonian_cord: 46745
+}
+
 // TODO: Move Daily Crafting and other route-specific data to their own store modules
 export default new Vuex.Store({
   state: {
@@ -52,13 +62,8 @@ export default new Vuex.Store({
       state.accountDailyCrafting = accountDailyCrafting
     },
     setDailyCraftingItems (state, dailyCraftingItems) {
-      state.dailyCraftingItems = dailyCraftingItems.reduce((items, item) => {
-        const key = item.name.toLowerCase().split(' ').join('_')
-        items[key] = item
-        return items
-      }, {})
+      state.dailyCraftingItems = dailyCraftingItems
     }
-    // TODO: Create object where crafting item name is key, value is fully qualified item value
   },
   actions: {
     fetchDailyCrafting ({ commit }) {
@@ -75,16 +80,16 @@ export default new Vuex.Store({
         })
         .catch(error => { console.log(error) })
     },
-    fetchDailyCraftingItems ({ commit, getters }) {
-      // TODO: Test case comparing item ids (convert to array)
-      return axios.get('https://cors-anywhere.herokuapp.com/https://api.guildwars2.com/v2/items?ids=46744,43772,46742,46740,46745')
+    fetchDailyCraftingItems ({ commit }) {
+      const idsString = Object.values(craftingItemIds).join(',')
+      return axios.get(`https://cors-anywhere.herokuapp.com/https://api.guildwars2.com/v2/items?ids=${idsString}`)
         .then(response => {
           commit('setDailyCraftingItems', response.data)
         })
         .catch(error => { console.log(error) })
     },
-    async fetchDailyCraftingData ({ dispatch, getters, commit }) {
-      await Promise.all([dispatch('fetchDailyCrafting'), dispatch('fetchAccountDailyCrafting')], dispatch('fetchDailyCraftingItems'))
+    fetchDailyCraftingData ({ dispatch }) {
+      Promise.all([dispatch('fetchDailyCrafting'), dispatch('fetchAccountDailyCrafting')], dispatch('fetchDailyCraftingItems'))
     },
     validateApiKey ({ commit }, apiKey) {
       commit('setAuthenticated', false)
