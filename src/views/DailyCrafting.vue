@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3
-      class="v-heading text-h3 my-4"
+      class="v-heading text-h4 my-4"
     >
       Daily Crafting
     </h3>

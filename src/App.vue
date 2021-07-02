@@ -32,9 +32,7 @@
         >
           <v-list-item dark>
             <v-list-item-content>
-              <v-list-item-title class="text-h6">
-                Orreo
-              </v-list-item-title>
+              <v-toolbar-title>Orreo</v-toolbar-title>
               <v-list-item-subtitle>
                 Navigation
               </v-list-item-subtitle>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="v-heading text-h3 my-4">Welcome</h3>
+    <h3 class="v-heading text-h4 my-4">Welcome</h3>
     <v-form
       ref="form"
       v-model="valid"
