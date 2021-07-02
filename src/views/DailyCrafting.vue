@@ -7,7 +7,7 @@
     </h3>
     <div class="mt-4">
       <v-list>
-        <v-list-item-group>
+        <v-list-item-group v-if="notCrafted.length">
           <v-subheader>Need to Craft</v-subheader>
           <v-divider />
           <crafting-item
@@ -16,7 +16,7 @@
             :item="item"
           />
         </v-list-item-group>
-        <v-list-item-group>
+        <v-list-item-group v-if="crafted.length">
           <v-subheader>Crafted</v-subheader>
           <v-divider />
           <crafting-item
