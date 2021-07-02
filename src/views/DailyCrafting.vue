@@ -5,28 +5,24 @@
     >
       Daily Crafting
     </h3>
-    <div class="mt-4">
-      <v-list>
-        <v-list-item-group v-if="notCrafted.length">
-          <v-subheader>Need to Craft</v-subheader>
-          <v-divider />
-          <crafting-item
-            v-for="item in notCrafted"
-            :key="item"
-            :item="item"
-          />
-        </v-list-item-group>
-        <v-list-item-group v-if="crafted.length">
-          <v-subheader>Crafted</v-subheader>
-          <v-divider />
-          <crafting-item
-            v-for="item in crafted"
-            :key="item"
-            :item="item"
-          />
-        </v-list-item-group>
-      </v-list>
-    </div>
+    <v-list>
+      <v-list-item-group>
+        <v-subheader>Need to Craft</v-subheader>
+        <v-divider class="mb-2" />
+        <crafting-item
+          v-for="item in notCrafted"
+          :key="item"
+          :item="item"
+        />
+        <v-subheader class="mt-2">Crafted</v-subheader>
+        <v-divider class="mb-2" />
+        <crafting-item
+          v-for="item in crafted"
+          :key="item"
+          :item="item"
+        />
+      </v-list-item-group>
+    </v-list>
   </div>
 </template>
 

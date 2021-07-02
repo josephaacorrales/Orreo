@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <!-- App Bar -->
     <v-app-bar
       dark
       app
@@ -9,7 +10,7 @@
       <template v-slot:img="{ props }">
         <v-img
           v-bind="props"
-          gradient="to top right, rgba(19,84,122,.3), rgba(128,208,199,.4)"
+          gradient="to top right, rgba(19,84,122,.4), rgba(128,208,199,.5)"
         />
       </template>
       <v-app-bar-nav-icon
@@ -17,23 +18,44 @@
       />
       <v-toolbar-title>Orreo</v-toolbar-title>
     </v-app-bar>
+    <!-- Navigation Drawer -->
     <v-navigation-drawer
       absolute
       v-model="drawer"
       temporary
     >
-      <v-list>
+      <v-list subheader>
+        <v-img
+          src="..\src\assets\images\GW2_Official\pattern5.jpg"
+          gradient="to top right, rgba(10,84,122,.7), rgba(64,100,64,.5)"
+          height="64px"
+        >
+          <v-list-item dark>
+            <v-list-item-content>
+              <v-list-item-title class="text-h6">
+                Orreo
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                Navigation
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-img>
+        <v-divider />
         <v-list-item to="/">
           <v-list-item-title>Enter API Key</v-list-item-title>
         </v-list-item>
-        <v-list-item :disabled="!authenticated" to="/daily-crafting">
+        <v-list-item
+          :disabled="!authenticated"
+          to="/daily-crafting"
+        >
           <v-list-item-title>Daily Crafting</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-main>
       <v-container>
-        <router-view/>
+        <router-view />
       </v-container>
     </v-main>
   </v-app>
@@ -52,3 +74,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#nav-drawer-header {
+  background-image: url('assets/images/GW2_Official/pattern4.jpg') !important;
+}
+</style>
