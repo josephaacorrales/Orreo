@@ -15,7 +15,7 @@
       <v-app-bar-nav-icon
         @click.stop="drawer = !drawer"
       />
-      <v-toolbar-title>Orrient</v-toolbar-title>
+      <v-toolbar-title>Orreo</v-toolbar-title>
     </v-app-bar>
     <v-navigation-drawer
       absolute
