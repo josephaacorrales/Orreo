@@ -1,32 +1,54 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app id="app">
+    <v-app-bar
+      dark
+      app
+      color="#fcb69f"
+      src="..\src\assets\images\GW2_Official\pattern6.jpg"
+    >
+      <template v-slot:img="{ props }">
+        <v-img
+          v-bind="props"
+          gradient="to top right, rgba(19,84,122,.3), rgba(128,208,199,.4)"
+        />
+      </template>
+      <v-app-bar-nav-icon
+        @click.stop="drawer = !drawer"
+      />
+      <v-toolbar-title>Orrient</v-toolbar-title>
+    </v-app-bar>
+    <v-navigation-drawer
+      absolute
+      v-model="drawer"
+      temporary
+    >
+      <v-list>
+        <v-list-item to="/">
+          <v-list-item-title>Enter API Key</v-list-item-title>
+        </v-list-item>
+        <v-list-item :disabled="!authenticated" to="/daily-crafting">
+          <v-list-item-title>Daily Crafting</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-main>
+      <v-container>
+        <router-view/>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { mapGetters } from 'vuex'
 
-#nav {
-  padding: 30px;
+export default {
+  name: 'App',
+  data: () => ({
+    drawer: false
+  }),
+  computed: {
+    ...mapGetters(['authenticated'])
+  }
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+</script>

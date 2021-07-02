@@ -1,18 +1,60 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h3 class="v-heading text-h3 my-4">Welcome</h3>
+    <v-form
+      ref="form"
+      v-model="valid"
+      lazy-validation
+      @submit.prevent="validateForm"
+    >
+      <v-text-field
+        v-model="apiKey"
+        :rules="apiKeyRules"
+        label="Guild Wars 2 API Key"
+        required
+      />
+      <div class="text-right">
+        <v-btn
+          type="submit"
+          dark
+          class="my-2"
+          color="teal"
+        >
+          Use this Key
+        </v-btn>
+      </div>
+    </v-form>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  data: () => ({
+    valid: true,
+    apiKey: '',
+    apiKeyRules: [
+      v => !!v || 'API key is required'
+    ]
+  }),
+  methods: {
+    submitForm () {
+      this.$store.dispatch('validateApiKey', this.apiKey)
+    },
+    validateForm () {
+      this.$refs.form.validate() && this.submitForm()
+    }
+  },
+  computed: {
+    authenticated () { return this.$store.getters.authenticated }
+  },
+  watch: {
+    authenticated () {
+      // redirect to /daily-crafting when authenticated
+      if (this.authenticated) {
+        this.$router.push('/daily-crafting')
+      }
+    }
   }
 }
 </script>
