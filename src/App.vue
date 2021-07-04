@@ -28,10 +28,10 @@
         <v-img
           src="..\src\assets\images\GW2_Official\pattern5.jpg"
           gradient="to top right, rgba(10,84,122,.7), rgba(64,100,64,.5)"
-          height="64px"
+          :height="$vuetify.breakpoint.smAndDown ? '56px' : '64px'"
         >
           <v-list-item dark>
-            <v-list-item-content>
+            <v-list-item-content class="pt-2">
               <v-toolbar-title>Orreo</v-toolbar-title>
               <v-list-item-subtitle>
                 Navigation
@@ -39,8 +39,10 @@
             </v-list-item-content>
           </v-list-item>
         </v-img>
-        <v-divider />
-        <v-list-item to="/">
+        <v-list-item
+          to="/"
+          class="mt-0"
+        >
           <v-list-item-title>Enter API Key</v-list-item-title>
         </v-list-item>
         <v-list-item
