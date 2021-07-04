@@ -174,29 +174,25 @@ export default new Vuex.Store({
     },
     buildCrafted (state) {
       state.crafted = state.accountDailyCrafting.map(item => state.gameItems.find(gameItem => gameItem.id === state.dailyCraftingItemIds[item]))
+    },
+    logout (state) {
+      state.apiKey = ''
+      state.authenticated = false
+      state.accountDailyCrafting = []
     }
   },
   actions: {
     fetchAccountDailyCrafting ({ commit, getters }) {
-      return axios.get('https://cors-anywhere.herokuapp.com/https://api.guildwars2.com/v2/account/dailycrafting/', { params: { access_token: getters.apiKey } })
-        .then(response => {
+      const res = axios.get('https://c2h7nmi4zd.execute-api.us-west-2.amazonaws.com/default/fetchAccountDailyCrafting/', { params: { 'gw2-api-key': getters.apiKey } })
+      res.then(response => {
+        if (response.status === 200) {
+          commit('setAuthenticated', true)
           commit('setAccountDailyCrafting', response.data)
           commit('buildNotCrafted')
           commit('buildCrafted')
-        })
-        .catch(error => { console.log(error) })
-    },
-    validateApiKey ({ commit }, apiKey) {
-      commit('setAuthenticated', false)
-      axios.get('https://cors-anywhere.herokuapp.com/https://api.guildwars2.com/v2/account/', { params: { access_token: apiKey } })
-        .then(response => {
-          if (response.data.text && response.data.text === 'Invalid access token') {
-            commit('setAuthenticated', false)
-          } else if (response.data.id) {
-            commit('setAuthenticated', true)
-            commit('setApiKey', apiKey)
-          }
-        })
+        }
+      }).catch(error => { console.log(error) })
+      return res
     }
   }
 })
