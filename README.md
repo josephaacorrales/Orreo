@@ -1,7 +1,7 @@
 # Orreo
 
 ## About
-A companion app for tracking daily crafting progress on your Guild Wars 2 account.  Required Guild Wars 2 API key with default permission, account.
+A companion app for tracking daily crafting progress on your Guild Wars 2 account.  Required Guild Wars 2 API key with progression permission.
 
 ## Project setup
 
