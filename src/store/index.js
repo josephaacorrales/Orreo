@@ -4,24 +4,128 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-// TODO: Document reasoning behind this choice.  API limitations.
-// TODO: Test case against return from /v2/dailycrafting and this to verify ids are up to date
-export const craftingItemIds = {
-  lump_of_mithrilium: 46742,
-  charged_quartz_crystal: 43772,
-  glob_of_elder_spirit_residue: 46744,
-  spool_of_silk_weaving_thread: 46740,
-  spool_of_thick_elonian_cord: 46745
-}
-
-// TODO: Move Daily Crafting and other route-specific data to their own store modules
 export default new Vuex.Store({
   state: {
     apiKey: '',
     authenticated: false,
-    dailyCrafting: [],
     accountDailyCrafting: [],
-    dailyCraftingItems: [],
+    dailyCrafting: [
+      'charged_quartz_crystal',
+      'glob_of_elder_spirit_residue',
+      'lump_of_mithrilium',
+      'spool_of_silk_weaving_thread',
+      'spool_of_thick_elonian_cord'
+    ],
+    dailyCraftingItemIds: {
+      lump_of_mithrilium: 46742,
+      charged_quartz_crystal: 43772,
+      glob_of_elder_spirit_residue: 46744,
+      spool_of_silk_weaving_thread: 46740,
+      spool_of_thick_elonian_cord: 46745
+    },
+    gameItems: [
+      {
+        name: 'Lump of Mithrillium',
+        description: 'Used in the refinement of deldrimor steel.',
+        type: 'CraftingMaterial',
+        vendor_value: 80,
+        id: 46742,
+        ingredients: [
+          {
+            name: 'Mithril Ingot',
+            count: 50
+          },
+          {
+            name: 'Glob of Ectoplasm',
+            count: 1
+          },
+          {
+            name: 'Thermocatalytic Reagent',
+            count: 10
+          }
+        ],
+        chat_link: '[&AgGWtgAA]',
+        icon: 'https://render.guildwars2.com/file/BAF140ED460135E04101146CC8CE9EFB5698F077/631490.png'
+      },
+      {
+        name: 'Glob of Elder Spirit Residue',
+        description: 'Used in the refinement of spiritwood.',
+        type: 'CraftingMaterial',
+        vendor_value: 80,
+        id: 46744,
+        ingredients: [
+          {
+            name: 'Elder Wood Plank',
+            count: 50
+          },
+          {
+            name: 'Glob of Ectoplasm',
+            count: 1
+          },
+          {
+            name: 'Thermocatalytic Reagent',
+            count: 10
+          }
+        ],
+        chat_link: '[&AgGYtgAA]',
+        icon: 'https://render.guildwars2.com/file/131F51B9177E2AEB75326901021C42CB3169452D/631492.png'
+      },
+      {
+        name: 'Spool of Silk Weaving Thread',
+        description: 'Used in the weaving of damask.',
+        type: 'CraftingMaterial',
+        vendor_value: 80,
+        id: 46740,
+        ingredients: [
+          {
+            name: 'Bolt of Silk',
+            count: 100
+          },
+          {
+            name: 'Glob of Ectoplasm',
+            count: 1
+          },
+          {
+            name: 'Spool of Gossamer Thread',
+            count: 25
+          }
+        ],
+        chat_link: '[&AgGUtgAA]',
+        icon: 'https://render.guildwars2.com/file/45C6FC08BE801CFC31C455A8684A963B51A73759/631488.png'
+      },
+      {
+        name: 'Spool of Thick Elonian Cord',
+        description: 'Used in the refinement of elonian leather.',
+        type: 'CraftingMaterial',
+        vendor_value: 80,
+        id: 46745,
+        ingredients: [
+          {
+            name: 'Cured Thick Leather Square',
+            count: 50
+          },
+          {
+            name: 'Glob of Ectoplasm',
+            count: 1
+          },
+          {
+            name: 'Thermocatalytic Reagent',
+            count: 10
+          }
+        ],
+        chat_link: '[&AgGZtgAA]',
+        icon: 'https://render.guildwars2.com/file/643E2343E5B573664DD8010ACBD9B5BD970E305C/631493.png'
+      },
+      {
+        name: 'Charged Quartz Crystal',
+        description: 'Transform 25 Quartz into a Charged Quartz Crystal at a place of power.',
+        type: 'CraftingMaterial',
+        vendor_value: 50,
+        id: 43772,
+        chat_link: '[&AgH8qgAA]',
+        icon: 'https://render.guildwars2.com/file/10ABB44B459640C30CB8BFAEA9DFEAE19C6ECD67/603251.png'
+      }
+    ],
     notCrafted: [],
     crafted: []
   },
@@ -38,14 +142,14 @@ export default new Vuex.Store({
     accountDailyCrafting (state) {
       return state.accountDailyCrafting
     },
-    dailyCraftingItems (state) {
-      return state.dailyCraftingItems
+    gameItems (state) {
+      return state.gameItems
     },
     notCrafted (state) {
-      return state.dailyCrafting.filter(item => !state.accountDailyCrafting.includes(item))
+      return state.notCrafted
     },
     crafted (state) {
-      return state.dailyCrafting.filter(item => state.accountDailyCrafting.includes(item))
+      return state.crafted
     }
   },
   mutations: {
@@ -61,39 +165,29 @@ export default new Vuex.Store({
     setAccountDailyCrafting (state, accountDailyCrafting) {
       state.accountDailyCrafting = accountDailyCrafting
     },
-    setDailyCraftingItems (state, dailyCraftingItems) {
-      state.dailyCraftingItems = dailyCraftingItems
+    setgameItems (state, gameItems) {
+      state.gameItems = gameItems
+    },
+    buildNotCrafted (state) {
+      const notCraftedItemNames = state.dailyCrafting.filter(item => !state.accountDailyCrafting.includes(item))
+      state.notCrafted = notCraftedItemNames.map(mappedItem => state.gameItems.find(gameItem => gameItem.id === state.dailyCraftingItemIds[mappedItem]))
+    },
+    buildCrafted (state) {
+      state.crafted = state.accountDailyCrafting.map(item => state.gameItems.find(gameItem => gameItem.id === state.dailyCraftingItemIds[item]))
     }
   },
   actions: {
-    fetchDailyCrafting ({ commit }) {
-      return axios.get('https://cors-anywhere.herokuapp.com/https://api.guildwars2.com/v2/dailycrafting')
-        .then(response => {
-          commit('setDailyCrafting', response.data)
-        })
-        .catch(error => { console.log(error) })
-    },
     fetchAccountDailyCrafting ({ commit, getters }) {
       return axios.get('https://cors-anywhere.herokuapp.com/https://api.guildwars2.com/v2/account/dailycrafting/', { params: { access_token: getters.apiKey } })
         .then(response => {
           commit('setAccountDailyCrafting', response.data)
+          commit('buildNotCrafted')
+          commit('buildCrafted')
         })
         .catch(error => { console.log(error) })
-    },
-    fetchDailyCraftingItems ({ commit }) {
-      const idsString = Object.values(craftingItemIds).join(',')
-      return axios.get(`https://cors-anywhere.herokuapp.com/https://api.guildwars2.com/v2/items?ids=${idsString}`)
-        .then(response => {
-          commit('setDailyCraftingItems', response.data)
-        })
-        .catch(error => { console.log(error) })
-    },
-    fetchDailyCraftingData ({ dispatch }) {
-      Promise.all([dispatch('fetchDailyCrafting'), dispatch('fetchAccountDailyCrafting')], dispatch('fetchDailyCraftingItems'))
     },
     validateApiKey ({ commit }, apiKey) {
       commit('setAuthenticated', false)
-      // TODO: Use env variables for dev and production links to api
       axios.get('https://cors-anywhere.herokuapp.com/https://api.guildwars2.com/v2/account/', { params: { access_token: apiKey } })
         .then(response => {
           if (response.data.text && response.data.text === 'Invalid access token') {

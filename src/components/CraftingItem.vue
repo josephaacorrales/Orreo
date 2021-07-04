@@ -1,14 +1,21 @@
 <template>
   <v-list-item>
     <v-list-item-avatar>
-      <v-img
-        v-if="itemData"
-        :src="itemData.icon"
-      />
+      <v-img :src="item.icon" />
     </v-list-item-avatar>
-    <v-list-item-content v-if="itemData">
-      <v-list-item-title>{{ itemData.name }}</v-list-item-title>
-      <v-list-item-subtitle>{{ itemData.description }}</v-list-item-subtitle>
+    <v-list-item-content v-if="item">
+      <v-list-item-title>{{ item.name }}</v-list-item-title>
+      <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
+      <v-list-item-subtitle v-if="item.ingredients">
+        <span>Ingredients: <br></span>
+        <span
+          v-for="(ingredient, index) in item.ingredients"
+          :key="ingredient.name"
+        >
+          {{ `${ingredient.count} x ${ingredient.name}` }}
+          <br v-if="!(index === item.ingredients.count - 1)">
+        </span>
+      </v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-content v-else>
       <v-list-item-title>Something is wrong with this item.</v-list-item-title>
@@ -16,19 +23,23 @@
   </v-list-item>
 </template>
 <script>
-import { craftingItemIds } from '../store/index'
 export default {
   name: 'CraftingItem',
   props: {
     item: {
       required: true,
-      type: String
-    }
-  },
-  computed: {
-    itemData () {
-      return this.$store.getters.dailyCraftingItems.find(item => item.id === craftingItemIds[this.item])
+      type: Object
     }
   }
 }
 </script>
+
+<style scoped>
+  /**
+    An overwrite for Vuetify list stylings.
+    Allows v-list-item-subtitle component height to stretch beyond the 3 line limit.
+  */
+  .v-list-item__subtitle {
+    white-space: normal;
+  }
+</style>

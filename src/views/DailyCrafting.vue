@@ -6,22 +6,20 @@
       Daily Crafting
     </h3>
     <v-list>
-      <v-list-item-group>
-        <v-subheader>Need to Craft</v-subheader>
-        <v-divider class="mb-2" />
-        <crafting-item
-          v-for="item in notCrafted"
-          :key="item"
-          :item="item"
-        />
-        <v-subheader class="mt-2">Crafted</v-subheader>
-        <v-divider class="mb-2" />
-        <crafting-item
-          v-for="item in crafted"
-          :key="item"
-          :item="item"
-        />
-      </v-list-item-group>
+      <v-subheader>Incomplete</v-subheader>
+      <v-divider class="mb-2 orange" />
+      <crafting-item
+        v-for="item in notCrafted"
+        :key="item.id"
+        :item="item"
+      />
+      <v-subheader class="mt-2">Complete</v-subheader>
+      <v-divider class="mb-2 green" />
+      <crafting-item
+        v-for="item in crafted"
+        :key="item.id"
+        :item="item"
+      />
     </v-list>
   </div>
 </template>
@@ -35,20 +33,21 @@ export default {
   data: () => ({
     loading: false,
     error: null,
-    active: true
+    dialog: false
   }),
   created () {
-    this.fetchDailyCraftingData()
+    this.fetchAccountDailyCrafting()
   },
+  // Fetch required data on route entry
   watch: {
-    $route: 'fetchDailyCraftingData'
+    $route: 'fetchAccountDailyCrafting'
   },
   computed: {
-    ...mapGetters(['dailyCrafting', 'accountDailyCrafting', 'dailyCraftingItems', 'notCrafted', 'crafted'])
+    ...mapGetters(['notCrafted', 'crafted'])
   },
   methods: {
-    fetchDailyCraftingData () {
-      this.$store.dispatch('fetchDailyCraftingData')
+    fetchAccountDailyCrafting () {
+      this.$store.dispatch('fetchAccountDailyCrafting')
     }
   }
 }
