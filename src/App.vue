@@ -40,22 +40,27 @@
           </v-list-item>
         </v-img>
         <v-list-item
-          to="/"
-          class="mt-0"
-        >
-          <v-list-item-title>Enter API Key</v-list-item-title>
-        </v-list-item>
-        <v-list-item
           :disabled="!authenticated"
           to="/daily-crafting"
         >
           <v-list-item-title>Daily Crafting</v-list-item-title>
         </v-list-item>
       </v-list>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn
+            block
+            v-if="authenticated"
+            @click="logout"
+          >
+            Logout
+          </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
     <v-main>
       <v-container>
-        <router-view />
+        <home />
       </v-container>
     </v-main>
   </v-app>
@@ -63,12 +68,20 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Home from './views/Home'
 
 export default {
   name: 'App',
+  components: { Home },
   data: () => ({
     drawer: false
   }),
+  methods: {
+    logout () {
+      this.$store.commit('logout')
+      this.$router.push('/')
+    }
+  },
   computed: {
     ...mapGetters(['authenticated'])
   }
