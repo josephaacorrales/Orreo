@@ -28,7 +28,6 @@ const router = new VueRouter({
   routes
 })
 
-// TODO: route after, error handling in form before
 // If not authenticated, redirect to Home route
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
