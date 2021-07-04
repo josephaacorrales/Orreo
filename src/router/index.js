@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '../store'
 import Home from '../views/Home'
 
 Vue.use(VueRouter)
@@ -8,6 +7,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'Home',
     component: Home
   },
   {
@@ -23,22 +23,9 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
-})
-
-// If not authenticated, redirect to Home route
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.getters.authenticated) {
-      next({ path: '/' })
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
 })
 
 export default router
