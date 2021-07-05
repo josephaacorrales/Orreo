@@ -1,20 +1,22 @@
 <template>
   <div>
-    <h3
-      class="v-heading text-h4 my-4"
-    >
+    <h3 class="v-heading text-h4 my-4">
       Daily Crafting
     </h3>
     <v-list>
-      <v-subheader>Incomplete</v-subheader>
-      <v-divider class="mb-2 orange" />
+      <div v-if="notCrafted.length">
+        <v-subheader>Incomplete</v-subheader>
+        <v-divider class="mb-2 orange" />
+      </div>
       <crafting-item
         v-for="item in notCrafted"
         :key="item.id"
         :item="item"
       />
-      <v-subheader class="mt-2">Complete</v-subheader>
-      <v-divider class="mb-2 green" />
+      <div v-if="crafted.length">
+        <v-subheader class="mt-2">Complete</v-subheader>
+        <v-divider class="mb-2 green" />
+      </div>
       <crafting-item
         v-for="item in crafted"
         :key="item.id"
@@ -26,15 +28,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import CraftingItem from '../components/CraftingItem'
+import CraftingItem from '../components/CraftingItem.vue'
+
 export default {
   name: 'DailyCrafting',
   components: { CraftingItem },
-  data: () => ({
-    loading: false,
-    error: null,
-    dialog: false
-  }),
   created () {
     this.fetchAccountDailyCrafting()
   },
