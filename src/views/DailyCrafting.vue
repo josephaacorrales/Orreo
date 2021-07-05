@@ -13,8 +13,11 @@
         :key="item.id"
         :item="item"
       />
-      <div v-if="crafted.length">
-        <v-subheader class="mt-2">Complete</v-subheader>
+      <div
+        class="mt-2"
+        v-if="crafted.length"
+      >
+        <v-subheader>Complete</v-subheader>
         <v-divider class="mb-2 green" />
       </div>
       <crafting-item
