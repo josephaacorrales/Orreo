@@ -1,63 +1,9 @@
 <template>
   <v-app id="app">
     <!-- App Bar -->
-    <v-app-bar
-      dark
-      app
-      color="#fcb69f"
-      src="..\src\assets\images\GW2_Official\pattern6.jpg"
-    >
-      <template v-slot:img="{ props }">
-        <v-img
-          v-bind="props"
-          gradient="to top right, rgba(19,84,122,.4), rgba(128,208,199,.5)"
-        />
-      </template>
-      <v-app-bar-nav-icon
-        @click.stop="drawer = !drawer"
-      />
-      <v-toolbar-title>Orreo</v-toolbar-title>
-    </v-app-bar>
+    <app-bar @toggleDrawer="toggleDrawer" />
     <!-- Navigation Drawer -->
-    <v-navigation-drawer
-      absolute
-      v-model="drawer"
-      temporary
-    >
-      <v-list subheader>
-        <v-img
-          src="..\src\assets\images\GW2_Official\pattern5.jpg"
-          gradient="to top right, rgba(10,84,122,.7), rgba(64,100,64,.5)"
-          :height="$vuetify.breakpoint.smAndDown ? '56px' : '64px'"
-        >
-          <v-list-item dark>
-            <v-list-item-content class="pt-2">
-              <v-toolbar-title>Orreo</v-toolbar-title>
-              <v-list-item-subtitle>
-                Navigation
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-img>
-        <v-list-item
-          :disabled="!authenticated"
-          to="/daily-crafting"
-        >
-          <v-list-item-title>Daily Crafting</v-list-item-title>
-        </v-list-item>
-      </v-list>
-      <template v-slot:append>
-        <div class="pa-2">
-          <v-btn
-            block
-            v-if="authenticated"
-            @click="logout"
-          >
-            Logout
-          </v-btn>
-        </div>
-      </template>
-    </v-navigation-drawer>
+    <navigation-drawer :drawer="drawer" />
     <v-main>
       <v-container>
         <home />
@@ -67,23 +13,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Home from './views/Home'
+import AppBar from './components/AppBar.vue'
+import NavigationDrawer from './components/NavigationDrawer.vue'
+import Home from './views/Home.vue'
 
 export default {
   name: 'App',
-  components: { Home },
+  components: { Home, AppBar, NavigationDrawer },
   data: () => ({
     drawer: false
   }),
   methods: {
-    logout () {
-      this.$store.commit('logout')
-      this.$router.push('/')
+    toggleDrawer () {
+      this.drawer = !this.drawer
     }
-  },
-  computed: {
-    ...mapGetters(['authenticated'])
   }
 }
 </script>
