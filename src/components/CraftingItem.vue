@@ -7,14 +7,14 @@
       <v-list-item-title>{{ item.name }}</v-list-item-title>
       <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
       <v-list-item-subtitle v-if="item.ingredients">
-        <span>Ingredients: <br></span>
-        <span
+        <div>Ingredients: <br></div>
+        <div
           v-for="(ingredient, index) in item.ingredients"
           :key="ingredient.name"
         >
           {{ `${ingredient.count} x ${ingredient.name}` }}
           <br v-if="!(index === item.ingredients.count - 1)">
-        </span>
+        </div>
       </v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-content v-else>
@@ -36,7 +36,7 @@ export default {
 
 <style scoped>
   /**
-    An overwrite for Vuetify list stylings.
+    Overwrite for Vuetify list stylings.
     Allows v-list-item-subtitle component height to stretch beyond the 3 line limit.
   */
   .v-list-item__subtitle {
