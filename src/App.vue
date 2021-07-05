@@ -30,9 +30,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#nav-drawer-header {
-  background-image: url('assets/images/GW2_Official/pattern4.jpg') !important;
-}
-</style>
