@@ -6,7 +6,7 @@
   >
     <v-list subheader>
       <v-img
-        src="..\assets\images\GW2_Official\pattern5.jpg"
+        src="..\assets\GW2_Asset_Kit\pattern5.jpg"
         gradient="to top right, rgba(10,84,122,.7), rgba(64,100,64,.5)"
         :height="$vuetify.breakpoint.smAndDown ? '56px' : '64px'"
       >

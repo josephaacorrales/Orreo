@@ -3,7 +3,7 @@
     dark
     app
     color="#fcb69f"
-    src="..\assets\images\GW2_Official\pattern6.jpg"
+    src="..\assets\GW2_Asset_Kit\pattern6.jpg"
   >
     <template v-slot:img="{ props }">
       <v-img
